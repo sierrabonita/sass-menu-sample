@@ -150,7 +150,11 @@ const RichEditor = () => {
                 <span>✨</span> AIに依頼
               </button>
               <div className="w-px h-4 bg-zinc-200 mx-1"></div>
-              <button className="px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors whitespace-nowrap">
+              <button
+                onClick={() => complete('', { body: { selectedText, action: 'summarize' } })}
+                disabled={isLoading}
+                className="px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 要約する
               </button>
               <button className="px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors whitespace-nowrap">

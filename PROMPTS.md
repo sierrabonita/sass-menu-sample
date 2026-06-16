@@ -36,3 +36,21 @@
 - `action` が `'custom'` の場合、「あなたは優秀なアシスタントです。以下の【選択されたテキスト】に対して、【ユーザーの指示】に従って処理を行ってください。」という文脈のプロンプトを構築してください。
 - `streamText` を用いて、テキストのストリーミングレスポンスをフロントエンドに返却してください。
 ```
+
+```
+■ 1. `components/rich-editor.tsx` の更新
+- 「要約する」ボタンの `onClick` イベントに処理を追加してください。
+- `onClick` 時に Vercel AI SDK の `complete` 関数を呼び出してください。第1引数（prompt）は空文字列 `''` を渡し、第2引数の `options.body` に `{ selectedText, action: 'summarize' }` を設定してください。
+- AIの処理中（`isLoading === true`）はボタンを連打できないように、`disabled={isLoading}` を追加し、非活性時のスタイル（opacityの低下やカーソルの変更など）を適用してください。
+
+■ 2. `app/api/completion/route.ts` の更新
+- クライアントから送信される `action` の値に応じて、AIに渡すシステムプロンプトを分岐させてください。
+- `action === 'summarize'` の場合、以下のプロンプトを構築してください。
+
+「あなたは優秀なエディターアシスタントです。以下の【選択されたテキスト】の要点を抽出し、簡潔な箇条書きで要約してください。
+
+【選択されたテキスト】
+${selectedText}」
+
+- `action === 'custom'` の既存の分岐はそのまま残し、どちらの処理を通っても最終的に `streamText` と `toTextStreamResponse()` が実行される構成にしてください。
+```

@@ -17,6 +17,11 @@ export async function POST(req: Request) {
 
     【ユーザーの指示】
     ${customPrompt}`;
+  } else if (action === 'summarize') {
+    prompt = `あなたは優秀なエディターアシスタントです。以下の【選択されたテキスト】の要点を抽出し、簡潔な箇条書きで要約してください。
+
+    【選択されたテキスト】
+    ${selectedText}`;
   } else {
     return new Response('Invalid action', { status: 400 });
   }
