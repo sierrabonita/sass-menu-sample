@@ -22,6 +22,11 @@ export async function POST(req: Request) {
 
     【選択されたテキスト】
     ${selectedText}`;
+  } else if (action === 'translate') {
+    prompt = `あなたは優秀な翻訳アシスタントです。以下の【選択されたテキスト】の言語を自動判定し、日本語で書かれている場合は自然な英語に翻訳してください。英語やその他の言語で書かれている場合は、自然な日本語に翻訳してください。翻訳結果のテキストのみを出力し、解説などは含めないでください。
+
+    【選択されたテキスト】
+    ${selectedText}`;
   } else {
     return new Response('Invalid action', { status: 400 });
   }

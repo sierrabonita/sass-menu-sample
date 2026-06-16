@@ -54,3 +54,21 @@ ${selectedText}」
 
 - `action === 'custom'` の既存の分岐はそのまま残し、どちらの処理を通っても最終的に `streamText` と `toTextStreamResponse()` が実行される構成にしてください。
 ```
+
+```
+■ 1. `components/rich-editor.tsx` の更新
+- 「翻訳する」ボタンの `onClick` イベントに処理を追加してください。
+- `onClick` 時に Vercel AI SDK の `complete` 関数を呼び出してください。第1引数（prompt）は空文字列 `''` を渡し、第2引数の `options.body` に `{ selectedText, action: 'translate' }` を設定してください。
+- 「要約する」ボタンと同様に、AIの処理中（`isLoading === true`）はボタンを連打できないように `disabled={isLoading}` を追加し、非活性時のスタイルを適用してください。
+
+■ 2. `app/api/completion/route.ts` の更新
+- クライアントから送信される `action` の分岐に `'translate'` のケースを追加してください。
+- `action === 'translate'` の場合、以下のプロンプトを構築してください。
+
+「あなたは優秀な翻訳アシスタントです。以下の【選択されたテキスト】の言語を自動判定し、日本語で書かれている場合は自然な英語に翻訳してください。英語やその他の言語で書かれている場合は、自然な日本語に翻訳してください。翻訳結果のテキストのみを出力し、解説などは含めないでください。
+
+【選択されたテキスト】
+${selectedText}」
+
+- 既存の `'custom'`, `'summarize'` の分岐はそのまま維持し、正しくストリーミング処理（`streamText`）に渡るようにしてください。
+```
